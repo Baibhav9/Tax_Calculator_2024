@@ -79,10 +79,12 @@ export const TaxCalculator = () => {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Website
-                </Button>
+                <a href="https://jayard9.sg-host.com/">
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                      <ArrowLeft className="h-4 w-4 mr-2" />
+                      Back to Website
+                    </Button>
+                  </a>
                 <div className="flex items-center space-x-3">
                   <div>
                     <h1 className="text-2xl font-bold">2024 Tax Calculator</h1>
