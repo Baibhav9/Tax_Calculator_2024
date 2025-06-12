@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Calculator, DollarSign, HelpCircle, PieChart, TrendingUp } from 'lucide-react';
+import { ArrowLeft, DollarSign, HelpCircle, PieChart, TrendingUp } from 'lucide-react';
 import { calculateTaxes, STATE_TAX_INFO, TaxCalculationInput, TaxCalculationResult } from '@/utils/taxCalculations';
 import { TaxResultsChart } from '@/components/TaxResultsChart';
 
@@ -84,7 +84,6 @@ export const TaxCalculator = () => {
                   Back to Website
                 </Button>
                 <div className="flex items-center space-x-3">
-                  <Calculator className="h-8 w-8" />
                   <div>
                     <h1 className="text-2xl font-bold">2024 Tax Calculator</h1>
                     <p className="text-blue-100">Professional Tax Estimation Tool</p>
@@ -300,7 +299,7 @@ export const TaxCalculator = () => {
 
             {/* Results */}
             <div className="lg:col-span-2 space-y-6">
-              {results ? (
+              {results && (
                 <>
                   {/* Summary Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -445,14 +444,6 @@ export const TaxCalculator = () => {
                     </CardContent>
                   </Card>
                 </>
-              ) : (
-                <Card className="shadow-lg border-0">
-                  <CardContent className="p-12 text-center">
-                    <div className="text-muted-foreground">
-                      <p>Enter your income information to see your tax calculation</p>
-                    </div>
-                  </CardContent>
-                </Card>
               )}
             </div>
           </div>
