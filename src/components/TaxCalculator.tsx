@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -433,12 +432,12 @@ export const TaxCalculator = () => {
                     <TaxBracketChart results={results} />
                   </div>
 
-                  {/* Tax Bracket Details */}
+                  {/* Federal Tax Bracket Details */}
                   {results.taxBracketDetails.length > 0 && (
                     <Card className="shadow-lg border-0">
                       <CardHeader>
                         <CardTitle>Federal Tax Bracket Details</CardTitle>
-                        <CardDescription>How your income falls across different tax brackets</CardDescription>
+                        <CardDescription>How your income falls across different federal tax brackets</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-3">
@@ -447,7 +446,39 @@ export const TaxCalculator = () => {
                               <div className="flex items-center space-x-3">
                                 <Badge variant="outline">{formatPercentage(bracket.rate * 100)}</Badge>
                                 <span className="text-sm text-muted-foreground">
-                                  {formatCurrency(bracket.min)} - {bracket.max === 'No Limit' ? 'No Limit' : formatCurrency(bracket.max)}
+                                  {formatCurrency(bracket.min)} - {bracket.max === 'No Limit' ? 'No Limit' : formatCurrency(Number(bracket.max))}
+                                </span>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-sm font-medium">{formatCurrency(bracket.taxOwed)}</div>
+                                <div className="text-xs text-muted-foreground">
+                                  on {formatCurrency(bracket.taxableAmount)}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* State Tax Bracket Details */}
+                  {results.stateTaxBracketDetails && results.stateTaxBracketDetails.length > 0 && (
+                    <Card className="shadow-lg border-0">
+                      <CardHeader>
+                        <CardTitle>State Tax Bracket Details</CardTitle>
+                        <CardDescription>How your income falls across different {selectedStateName} tax brackets</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {results.stateTaxBracketDetails.map((bracket, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                              <div className="flex items-center space-x-3">
+                                <Badge variant="outline" className="bg-water-blue/10 text-water-blue border-water-blue">
+                                  {formatPercentage(bracket.rate * 100)}
+                                </Badge>
+                                <span className="text-sm text-muted-foreground">
+                                  {formatCurrency(bracket.min)} - {bracket.max === 'No Limit' ? 'No Limit' : formatCurrency(Number(bracket.max))}
                                 </span>
                               </div>
                               <div className="text-right">

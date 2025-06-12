@@ -1,4 +1,3 @@
-
 // 2024 Tax Year Federal Tax Brackets
 export const FEDERAL_TAX_BRACKETS_2024 = {
   single: [
@@ -151,7 +150,14 @@ export interface TaxCalculationResult {
   taxBracketDetails: Array<{
     rate: number;
     min: number;
-    max: number;
+    max: number | string;
+    taxableAmount: number;
+    taxOwed: number;
+  }>;
+  stateTaxBracketDetails?: Array<{
+    rate: number;
+    min: number;
+    max: number | string;
     taxableAmount: number;
     taxOwed: number;
   }>;
@@ -201,10 +207,22 @@ export function calculateFICATaxes(income: number, filingStatus: string): {
   return { socialSecurity, medicare, additionalMedicare };
 }
 
-export function calculateStateTax(taxableIncome: number, state: string): number {
+export function calculateStateTax(taxableIncome: number, state: string): { tax: number; bracketDetails: any[] } {
   const stateInfo = STATE_TAX_INFO[state as keyof typeof STATE_TAX_INFO];
-  if (!stateInfo || !stateInfo.hasIncomeTax) return 0;
-  return taxableIncome * stateInfo.rate;
+  if (!stateInfo || !stateInfo.hasIncomeTax) return { tax: 0, bracketDetails: [] };
+  
+  // For simplified state tax calculation, we'll use a single bracket
+  // In a real implementation, you'd have detailed bracket structures for each state
+  const tax = taxableIncome * stateInfo.rate;
+  const bracketDetails = [{
+    rate: stateInfo.rate,
+    min: 0,
+    max: 'No Limit',
+    taxableAmount: taxableIncome,
+    taxOwed: tax
+  }];
+  
+  return { tax, bracketDetails };
 }
 
 export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult {
@@ -239,7 +257,7 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
   const { socialSecurity, medicare, additionalMedicare } = calculateFICATaxes(grossIncome, input.filingStatus);
   
   // Calculate state tax
-  const stateTax = calculateStateTax(taxableIncome, input.state);
+  const { tax: stateTax, bracketDetails: stateBracketDetails } = calculateStateTax(taxableIncome, input.state);
   
   // Calculate totals
   const totalFederalTax = federalTax;
@@ -269,6 +287,7 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
     effectiveTaxRate,
     marginalTaxRate: marginalRate * 100,
     refundOrOwed,
-    taxBracketDetails: bracketDetails
+    taxBracketDetails: bracketDetails,
+    stateTaxBracketDetails: stateBracketDetails.length > 0 ? stateBracketDetails : undefined
   };
 }
