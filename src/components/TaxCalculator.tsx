@@ -294,7 +294,8 @@ export const TaxCalculator = () => {
                         />
                       )}
                     </div>
-                  </CardContent>
+                  </div>
+                </CardContent>
               </Card>
             </div>
 
@@ -512,6 +513,10 @@ export const TaxCalculator = () => {
                 <Card className="shadow-lg border-0">
                   <CardContent className="p-12 text-center">
                     <Calculator className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">Enter Your Income</h3>
+                    <p className="text-muted-foreground">
+                      Fill in your income information to see your detailed tax calculation
+                    </p>
                   </CardContent>
                 </Card>
               )}
