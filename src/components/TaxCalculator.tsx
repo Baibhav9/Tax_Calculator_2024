@@ -11,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Calculator, DollarSign, HelpCircle, PieChart, TrendingUp } from 'lucide-react';
 import { calculateTaxes, STATE_TAX_INFO, TaxCalculationInput, TaxCalculationResult } from '@/utils/taxCalculations';
 import { TaxResultsChart } from '@/components/TaxResultsChart';
-import { TaxBracketChart } from '@/components/TaxBracketChart';
 
 const FILING_STATUS_OPTIONS = [
   { value: 'single', label: 'Single' },
@@ -427,72 +426,9 @@ export const TaxCalculator = () => {
                   </Card>
 
                   {/* Charts */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     <TaxResultsChart results={results} />
-                    <TaxBracketChart results={results} />
                   </div>
-
-                  {/* Federal Tax Bracket Details */}
-                  {results.taxBracketDetails.length > 0 && (
-                    <Card className="shadow-lg border-0">
-                      <CardHeader>
-                        <CardTitle>Federal Tax Bracket Details</CardTitle>
-                        <CardDescription>How your income falls across different federal tax brackets</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          {results.taxBracketDetails.map((bracket, index) => (
-                            <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                              <div className="flex items-center space-x-3">
-                                <Badge variant="outline">{formatPercentage(bracket.rate * 100)}</Badge>
-                                <span className="text-sm text-muted-foreground">
-                                  {formatCurrency(bracket.min)} - {bracket.max === 'No Limit' ? 'No Limit' : formatCurrency(Number(bracket.max))}
-                                </span>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm font-medium">{formatCurrency(bracket.taxOwed)}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  on {formatCurrency(bracket.taxableAmount)}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {/* State Tax Bracket Details */}
-                  {results.stateTaxBracketDetails && results.stateTaxBracketDetails.length > 0 && (
-                    <Card className="shadow-lg border-0">
-                      <CardHeader>
-                        <CardTitle>State Tax Bracket Details</CardTitle>
-                        <CardDescription>How your income falls across different {selectedStateName} tax brackets</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          {results.stateTaxBracketDetails.map((bracket, index) => (
-                            <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                              <div className="flex items-center space-x-3">
-                                <Badge variant="outline" className="bg-water-blue/10 text-water-blue border-water-blue">
-                                  {formatPercentage(bracket.rate * 100)}
-                                </Badge>
-                                <span className="text-sm text-muted-foreground">
-                                  {formatCurrency(bracket.min)} - {bracket.max === 'No Limit' ? 'No Limit' : formatCurrency(Number(bracket.max))}
-                                </span>
-                              </div>
-                              <div className="text-right">
-                                <div className="text-sm font-medium">{formatCurrency(bracket.taxOwed)}</div>
-                                <div className="text-xs text-muted-foreground">
-                                  on {formatCurrency(bracket.taxableAmount)}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
 
                   {/* Call to Action */}
                   <Card className="shadow-lg border-0 gradient-gold text-white">
@@ -512,11 +448,9 @@ export const TaxCalculator = () => {
               ) : (
                 <Card className="shadow-lg border-0">
                   <CardContent className="p-12 text-center">
-                    <Calculator className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">Enter Your Income</h3>
-                    <p className="text-muted-foreground">
-                      Fill in your income information to see your detailed tax calculation
-                    </p>
+                    <div className="text-muted-foreground">
+                      <p>Enter your income information to see your tax calculation</p>
+                    </div>
                   </CardContent>
                 </Card>
               )}
