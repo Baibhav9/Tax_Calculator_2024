@@ -457,7 +457,7 @@ export const TaxCalculator = () => {
                 <p className="font-semibold">Important Disclaimers:</p>
                 <ul className="space-y-1 ml-4">
                   <li>• This calculator provides estimates based on 2024 tax year laws and may not reflect all tax situations.</li>
-                  <li>• Results are for educational purposes only and should not be considered as professional tax advice.</li>
+                  <li>• Results are for understanding purposes only and should not be considered as professional tax advice.</li>
                   <li>• Actual tax liability may vary based on additional factors not included in this calculator.</li>
                   <li>• Please consult with a qualified tax professional for accurate tax planning and filing.</li>
                   <li>• State tax calculations use simplified rates and may not reflect actual state-specific deductions or credits.</li>
