@@ -440,9 +440,11 @@ export const TaxCalculator = () => {
                       <p className="text-gold-100 mb-6">
                         Get personalized advice and ensure accuracy in your tax planning
                       </p>
-                      <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100">
-                        Book A Consultation
-                      </Button>
+                      <a href="https://jayard9.sg-host.com/index.php/book-consultation/" target="_blank" rel="noopener noreferrer">
+                        <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100">
+                          Book A Consultation
+                        </Button>
+                      </a>
                     </CardContent>
                   </Card>
                 </>
