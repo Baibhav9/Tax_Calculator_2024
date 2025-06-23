@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,15 @@ export const TaxCalculator = () => {
 
   useEffect(() => {
     if (formData.income > 0) {
-      const calculatedResults = calculateTaxes(formData);
+      // Apply the Standard/Other deductions logic
+      const effectiveDeductions = formData.otherDeductions <= 14600 ? 14600 : formData.otherDeductions;
+      
+      const modifiedFormData = {
+        ...formData,
+        otherDeductions: effectiveDeductions
+      };
+      
+      const calculatedResults = calculateTaxes(modifiedFormData);
       setResults(calculatedResults);
     }
   }, [formData]);
@@ -181,12 +190,12 @@ export const TaxCalculator = () => {
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="otherDeductions">Standard/ Other deductions</Label>
+                      <Label htmlFor="otherDeductions">Standard/Other deductions</Label>
                       <Input
                         id="otherDeductions"
                         type="number"
                         min="0"
-                        placeholder="Other deductions"
+                        placeholder="Standard/Other deductions"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
                       />
@@ -275,7 +284,7 @@ export const TaxCalculator = () => {
                               <span className="font-medium">{formatCurrency(results.adjustedGrossIncome)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>Standard Deduction:</span>
+                              <span>Standard/Other deductions:</span>
                               <span className="font-medium">{formatCurrency(results.standardDeduction)}</span>
                             </div>
                             <Separator />
