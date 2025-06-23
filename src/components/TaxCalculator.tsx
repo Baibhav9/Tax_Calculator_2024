@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -124,6 +123,7 @@ export const TaxCalculator = () => {
                     <Input
                       id="income"
                       type="number"
+                      min="0"
                       placeholder="Enter your annual income"
                       value={formData.income || ''}
                       onChange={(e) => handleInputChange('income', Number(e.target.value))}
@@ -167,6 +167,7 @@ export const TaxCalculator = () => {
                       <Input
                         id="federalWithholding"
                         type="number"
+                        min="0"
                         placeholder="Federal taxes withheld"
                         value={formData.federalWithholding || ''}
                         onChange={(e) => handleInputChange('federalWithholding', Number(e.target.value))}
@@ -180,10 +181,11 @@ export const TaxCalculator = () => {
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="otherDeductions">Additional Itemized Deductions</Label>
+                      <Label htmlFor="otherDeductions">Standard/ Other deductions</Label>
                       <Input
                         id="otherDeductions"
                         type="number"
+                        min="0"
                         placeholder="Other deductions"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
