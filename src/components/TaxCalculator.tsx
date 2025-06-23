@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -319,24 +318,6 @@ export const TaxCalculator = () => {
                               <span>Federal Income Tax:</span>
                               <span className="font-medium">{formatCurrency(results.federalTax)}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span>State Income Tax:</span>
-                              <span className="font-medium">{formatCurrency(results.stateTax)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Social Security Tax:</span>
-                              <span className="font-medium">{formatCurrency(results.socialSecurityTax)}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Medicare Tax:</span>
-                              <span className="font-medium">{formatCurrency(results.medicareTax)}</span>
-                            </div>
-                            {results.additionalMedicareTax > 0 && (
-                              <div className="flex justify-between">
-                                <span>Additional Medicare Tax:</span>
-                                <span className="font-medium">{formatCurrency(results.additionalMedicareTax)}</span>
-                              </div>
-                            )}
                             <Separator />
                             <div className="flex justify-between font-semibold text-lg">
                               <span>Total Taxes:</span>
