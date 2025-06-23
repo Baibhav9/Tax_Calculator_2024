@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -199,17 +199,6 @@ export const TaxCalculator = () => {
                         onChange={(e) => handleInputChange('federalWithholding', Number(e.target.value))}
                       />
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="stateWithholding">State Tax Withheld</Label>
-                      <Input
-                        id="stateWithholding"
-                        type="number"
-                        placeholder="State taxes withheld"
-                        value={formData.stateWithholding || ''}
-                        onChange={(e) => handleInputChange('stateWithholding', Number(e.target.value))}
-                      />
-                    </div>
                   </div>
 
                   <Separator />
@@ -226,73 +215,6 @@ export const TaxCalculator = () => {
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
                       />
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="retirementToggle" className="flex items-center space-x-2">
-                          <span>401(k)/Retirement Contributions</span>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Pre-tax retirement contributions (401k, 403b, etc.)</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </Label>
-                        <Switch
-                          id="retirementToggle"
-                          checked={formData.hasRetirementContributions}
-                          onCheckedChange={(checked) => handleInputChange('hasRetirementContributions', checked)}
-                        />
-                      </div>
-                      {formData.hasRetirementContributions && (
-                        <Input
-                          type="number"
-                          placeholder="Retirement contributions"
-                          value={formData.retirementContributions || ''}
-                          onChange={(e) => handleInputChange('retirementContributions', Number(e.target.value))}
-                        />
-                      )}
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="studentLoanToggle">Student Loan Interest</Label>
-                        <Switch
-                          id="studentLoanToggle"
-                          checked={formData.hasStudentLoanInterest}
-                          onCheckedChange={(checked) => handleInputChange('hasStudentLoanInterest', checked)}
-                        />
-                      </div>
-                      {formData.hasStudentLoanInterest && (
-                        <Input
-                          type="number"
-                          placeholder="Student loan interest paid"
-                          value={formData.studentLoanInterest || ''}
-                          onChange={(e) => handleInputChange('studentLoanInterest', Number(e.target.value))}
-                        />
-                      )}
-                    </div>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="charitableToggle">Charitable Donations</Label>
-                        <Switch
-                          id="charitableToggle"
-                          checked={formData.hasCharitableDeductions}
-                          onCheckedChange={(checked) => handleInputChange('hasCharitableDeductions', checked)}
-                        />
-                      </div>
-                      {formData.hasCharitableDeductions && (
-                        <Input
-                          type="number"
-                          placeholder="Charitable donations"
-                          value={formData.charitableDeductions || ''}
-                          onChange={(e) => handleInputChange('charitableDeductions', Number(e.target.value))}
-                        />
-                      )}
                     </div>
                   </div>
                 </CardContent>
