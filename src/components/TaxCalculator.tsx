@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, DollarSign, HelpCircle, PieChart, TrendingUp } from 'lucide-react';
-import { calculateTaxes, STATE_TAX_INFO, TaxCalculationInput, TaxCalculationResult } from '@/utils/taxCalculations';
+import { calculateTaxes, TaxCalculationInput, TaxCalculationResult } from '@/utils/taxCalculations';
 import { TaxResultsChart } from '@/components/TaxResultsChart';
 
 const FILING_STATUS_OPTIONS = [
@@ -36,12 +37,6 @@ export const TaxCalculator = () => {
   });
 
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
-  const [selectedStateName, setSelectedStateName] = useState('California');
-
-  useEffect(() => {
-    const stateName = STATE_TAX_INFO[formData.state as keyof typeof STATE_TAX_INFO]?.name || '';
-    setSelectedStateName(stateName);
-  }, [formData.state]);
 
   useEffect(() => {
     if (formData.income > 0) {
@@ -150,27 +145,6 @@ export const TaxCalculator = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="state">State</Label>
-                    <Select value={formData.state} onValueChange={(value) => handleInputChange('state', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your state" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-60">
-                        {Object.entries(STATE_TAX_INFO).map(([code, info]) => (
-                          <SelectItem key={code} value={code}>
-                            {info.name} ({code})
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {selectedStateName && (
-                      <div className="text-sm text-muted-foreground mt-1">
-                        Selected: <span className="font-medium text-peacock-blue">{selectedStateName}</span>
-                      </div>
-                    )}
                   </div>
 
                   <Separator />
@@ -365,7 +339,6 @@ export const TaxCalculator = () => {
                   <li>• Results are for understanding purposes only and should not be considered as professional tax advice.</li>
                   <li>• Actual tax liability may vary based on additional factors not included in this calculator.</li>
                   <li>• Please consult with a qualified tax professional for accurate tax planning and filing.</li>
-                  <li>• State tax calculations use simplified rates and may not reflect actual state-specific deductions or credits.</li>
                 </ul>
               </div>
             </CardContent>
