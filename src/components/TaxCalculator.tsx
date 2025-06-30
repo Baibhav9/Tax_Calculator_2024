@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -37,15 +36,17 @@ export const TaxCalculator = () => {
   });
 
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
+  const [effectiveDeductions, setEffectiveDeductions] = useState<number>(0);
 
   useEffect(() => {
     if (formData.income > 0) {
       // Apply the Standard/Other deductions logic
-      const effectiveDeductions = formData.otherDeductions <= 14600 ? 14600 : formData.otherDeductions;
+      const calculatedEffectiveDeductions = formData.otherDeductions <= 14600 ? 14600 : formData.otherDeductions;
+      setEffectiveDeductions(calculatedEffectiveDeductions);
       
       const modifiedFormData = {
         ...formData,
-        otherDeductions: effectiveDeductions
+        otherDeductions: calculatedEffectiveDeductions
       };
       
       const calculatedResults = calculateTaxes(modifiedFormData);
@@ -285,7 +286,7 @@ export const TaxCalculator = () => {
                             </div>
                             <div className="flex justify-between">
                               <span>Standard/Other deductions:</span>
-                              <span className="font-medium">{formatCurrency(results.standardDeduction)}</span>
+                              <span className="font-medium">{formatCurrency(effectiveDeductions)}</span>
                             </div>
                             <Separator />
                             <div className="flex justify-between font-semibold">
