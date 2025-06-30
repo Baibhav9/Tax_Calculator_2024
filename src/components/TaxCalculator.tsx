@@ -39,6 +39,9 @@ export const TaxCalculator = () => {
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
   const [effectiveDeductions, setEffectiveDeductions] = useState<number>(0);
 
+  // Check if form has meaningful input values
+  const hasInput = formData.income > 0;
+
   useEffect(() => {
     if (formData.income > 0) {
       // Apply the Standard/Other deductions logic
@@ -52,6 +55,9 @@ export const TaxCalculator = () => {
       
       const calculatedResults = calculateTaxes(modifiedFormData);
       setResults(calculatedResults);
+    } else {
+      setResults(null);
+      setEffectiveDeductions(0);
     }
   }, [formData]);
 
@@ -105,9 +111,9 @@ export const TaxCalculator = () => {
         </div>
 
         <div className="max-w-7xl mx-auto p-6">
-          <div className={`grid gap-6 ${results ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1'}`}>
+          <div className={`grid gap-6 ${hasInput && results ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {/* Input Form */}
-            <div className={`space-y-8 ${results ? 'lg:col-span-1' : 'max-w-4xl mx-auto'}`}>
+            <div className={`space-y-8 ${hasInput && results ? 'lg:col-span-1' : 'max-w-5xl mx-auto'}`}>
               <Card className="shadow-lg border-0">
                 <CardHeader className="bg-gradient-to-r from-peacock-blue to-water-blue text-white rounded-t-lg">
                   <CardTitle className="flex items-center space-x-2">
@@ -118,7 +124,7 @@ export const TaxCalculator = () => {
                     Enter your 2024 tax information
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="p-8 space-y-6">
+                <CardContent className="p-10 space-y-8">
                   <div className="space-y-2">
                     <Label htmlFor="income" className="flex items-center space-x-2">
                       <span>Annual Gross Income</span>
@@ -138,14 +144,14 @@ export const TaxCalculator = () => {
                       placeholder="Enter your annual income"
                       value={formData.income || ''}
                       onChange={(e) => handleInputChange('income', Number(e.target.value))}
-                      className="text-lg h-12"
+                      className="text-lg h-14"
                     />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="filingStatus">Filing Status</Label>
                     <Select value={formData.filingStatus} onValueChange={(value) => handleInputChange('filingStatus', value)}>
-                      <SelectTrigger className="h-12">
+                      <SelectTrigger className="h-14">
                         <SelectValue placeholder="Select filing status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -160,7 +166,7 @@ export const TaxCalculator = () => {
 
                   <Separator />
 
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Tax Withholdings</h4>
                     
                     <div className="space-y-2">
@@ -182,14 +188,14 @@ export const TaxCalculator = () => {
                         placeholder="Federal taxes withheld"
                         value={formData.federalWithholding || ''}
                         onChange={(e) => handleInputChange('federalWithholding', Number(e.target.value))}
-                        className="h-12"
+                        className="h-14"
                       />
                     </div>
                   </div>
 
                   <Separator />
 
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
@@ -201,33 +207,35 @@ export const TaxCalculator = () => {
                         placeholder="Standard/Other deductions"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
-                        className="h-12"
+                        className="h-14"
                       />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Call to Action */}
+              {/* Call to Action - Adjusted height to match results section */}
               <Card className="shadow-lg border-0 gradient-gold text-white">
-                <CardContent className="p-10 text-center">
-                  <h3 className="text-2xl font-bold mb-4">
-                    Verify your tax estimate with one of our best tax professionals for free
-                  </h3>
-                  <p className="text-gold-100 mb-8 text-lg">
-                    Get personalized advice and ensure accuracy in your tax planning
-                  </p>
-                  <a href="https://jayard9.sg-host.com/index.php/book-consultation/" target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100 text-lg px-8 py-4 h-auto">
-                      Book A Consultation
-                    </Button>
-                  </a>
+                <CardContent className="p-10 text-center flex flex-col justify-center" style={{ minHeight: hasInput && results ? '600px' : 'auto' }}>
+                  <div>
+                    <h3 className="text-3xl font-bold mb-6">
+                      Verify your tax estimate with one of our best tax professionals for free
+                    </h3>
+                    <p className="text-gold-100 mb-10 text-xl leading-relaxed">
+                      Get personalized advice and ensure accuracy in your tax planning
+                    </p>
+                    <a href="https://jayard9.sg-host.com/index.php/book-consultation/" target="_blank" rel="noopener noreferrer">
+                      <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100 text-xl px-12 py-6 h-auto">
+                        Book A Consultation
+                      </Button>
+                    </a>
+                  </div>
                 </CardContent>
               </Card>
             </div>
 
             {/* Results */}
-            {results && (
+            {hasInput && results && (
               <div className="lg:col-span-2 space-y-6">
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -343,7 +351,7 @@ export const TaxCalculator = () => {
           </div>
 
           {/* Disclaimers */}
-          <Card className="shadow-lg border-0 mt-12">
+          <Card className="shadow-lg border-0 mt-16">
             <CardContent className="p-6">
               <div className="text-xs text-muted-foreground space-y-2">
                 <p className="font-semibold">Important Disclaimers:</p>
