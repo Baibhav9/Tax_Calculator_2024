@@ -204,6 +204,23 @@ export const TaxCalculator = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Call to Action */}
+              <Card className="shadow-lg border-0 gradient-gold text-white">
+                <CardContent className="p-8 text-center">
+                  <h3 className="text-xl font-bold mb-2">
+                    Verify your tax estimate with one of our best tax professionals for free
+                  </h3>
+                  <p className="text-gold-100 mb-6">
+                    Get personalized advice and ensure accuracy in your tax planning
+                  </p>
+                  <a href="https://jayard9.sg-host.com/index.php/book-consultation/" target="_blank" rel="noopener noreferrer">
+                    <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100">
+                      Book A Consultation
+                    </Button>
+                  </a>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Results */}
@@ -319,23 +336,6 @@ export const TaxCalculator = () => {
                   <div className="grid grid-cols-1 gap-6">
                     <TaxResultsChart results={results} />
                   </div>
-
-                  {/* Call to Action */}
-                  <Card className="shadow-lg border-0 gradient-gold text-white">
-                    <CardContent className="p-8 text-center">
-                      <h3 className="text-xl font-bold mb-2">
-                        Verify your tax estimate with one of our best tax professionals for free
-                      </h3>
-                      <p className="text-gold-100 mb-6">
-                        Get personalized advice and ensure accuracy in your tax planning
-                      </p>
-                      <a href="https://jayard9.sg-host.com/index.php/book-consultation/" target="_blank" rel="noopener noreferrer">
-                        <Button size="lg" variant="secondary" className="bg-white text-luxor-gold hover:bg-gray-100">
-                          Book A Consultation
-                        </Button>
-                      </a>
-                    </CardContent>
-                  </Card>
                 </>
               )}
             </div>
