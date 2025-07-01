@@ -13,27 +13,27 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
     {
       name: 'Federal Tax',
       value: results.federalTax,
-      color: '#0D6E98'
+      color: '#0D6E98' // Peacock blue
     },
     {
       name: 'State Tax',
       value: results.stateTax,
-      color: '#1B8CBC'
+      color: '#B58537' // Luxor gold
     },
     {
       name: 'Social Security',
       value: results.socialSecurityTax,
-      color: '#B58537'
+      color: '#dc2626' // Red
     },
     {
       name: 'Medicare',
       value: results.medicareTax + results.additionalMedicareTax,
-      color: '#d4a55a'
+      color: '#7c3aed' // Purple
     },
     {
       name: 'Take-Home Pay',
       value: results.netIncome,
-      color: '#22c55e'
+      color: '#22c55e' // Green
     }
   ].filter(item => item.value > 0);
 
