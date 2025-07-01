@@ -106,16 +106,40 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
           </div>
 
           {/* Summary Stats Section */}
-          <div className="flex flex-col justify-center space-y-6">
+          <div className="flex flex-col justify-center space-y-4">
             <div>
-              <div className="font-semibold text-muted-foreground">Total Taxes</div>
-              <div className="text-3xl font-bold text-peacock-blue">
+              <div className="font-semibold text-muted-foreground text-sm">Gross Income:</div>
+              <div className="text-xl font-bold text-peacock-blue">
+                {formatCurrency(results.grossIncome)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-muted-foreground text-sm">Adjusted Gross Income:</div>
+              <div className="text-xl font-bold text-peacock-blue">
+                {formatCurrency(results.adjustedGrossIncome)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-muted-foreground text-sm">Standard/Other deductions:</div>
+              <div className="text-xl font-bold text-peacock-blue">
+                {formatCurrency(results.standardDeduction)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-muted-foreground text-sm">Federal Income Tax:</div>
+              <div className="text-xl font-bold text-peacock-blue">
+                {formatCurrency(results.federalTax)}
+              </div>
+            </div>
+            <div className="pt-2 border-t">
+              <div className="font-semibold text-muted-foreground text-sm">Total Taxes</div>
+              <div className="text-2xl font-bold text-peacock-blue">
                 {formatCurrency(results.totalTaxes)}
               </div>
             </div>
             <div>
-              <div className="font-semibold text-muted-foreground">Effective Rate</div>
-              <div className="text-3xl font-bold text-peacock-blue">
+              <div className="font-semibold text-muted-foreground text-sm">Effective Rate</div>
+              <div className="text-2xl font-bold text-peacock-blue">
                 {results.effectiveTaxRate.toFixed(2)}%
               </div>
             </div>
