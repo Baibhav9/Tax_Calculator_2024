@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -229,60 +228,6 @@ export const TaxCalculator = () => {
             {/* Results */}
             {results && (
               <div className="lg:col-span-2 space-y-6">
-                {/* Summary Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="shadow-lg border-0">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Total Tax Liability</p>
-                          <p className="text-2xl font-bold text-peacock-blue">{formatCurrency(results.totalTaxes)}</p>
-                        </div>
-                        <div className="p-3 bg-peacock-blue/10 rounded-full">
-                          <TrendingUp className="h-6 w-6 text-peacock-blue" />
-                        </div>
-                      </div>
-                      <Badge variant="secondary" className="mt-2">
-                        {formatPercentage(results.effectiveTaxRate)} effective rate
-                      </Badge>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="shadow-lg border-0">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">Net Income</p>
-                          <p className="text-2xl font-bold text-green-600">{formatCurrency(results.netIncome)}</p>
-                        </div>
-                        <div className="p-3 bg-green-100 rounded-full">
-                          <DollarSign className="h-6 w-6 text-green-600" />
-                        </div>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">After all taxes</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="shadow-lg border-0">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-muted-foreground">
-                            {results.refundOrOwed >= 0 ? 'Estimated Refund' : 'Amount Owed'}
-                          </p>
-                          <p className={`text-2xl font-bold ${results.refundOrOwed >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {formatCurrency(Math.abs(results.refundOrOwed))}
-                          </p>
-                        </div>
-                        <div className={`p-3 rounded-full ${results.refundOrOwed >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
-                          <PieChart className={`h-6 w-6 ${results.refundOrOwed >= 0 ? 'text-green-600' : 'text-red-600'}`} />
-                        </div>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">Based on withholdings</p>
-                    </CardContent>
-                  </Card>
-                </div>
-
                 {/* Detailed Breakdown */}
                 <Card className="shadow-lg border-0">
                   <CardHeader>
