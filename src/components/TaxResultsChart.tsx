@@ -73,46 +73,51 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={120}
-                paddingAngle={2}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-                formatter={(value, entry: any) => (
-                  <span style={{ color: entry.color, fontSize: '12px' }}>
-                    {value}
-                  </span>
-                )}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <div className="font-semibold text-muted-foreground">Total Taxes</div>
-            <div className="text-lg font-bold text-peacock-blue">
-              {formatCurrency(results.totalTaxes)}
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Chart Section */}
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={120}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  formatter={(value, entry: any) => (
+                    <span style={{ color: entry.color, fontSize: '12px' }}>
+                      {value}
+                    </span>
+                  )}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          <div>
-            <div className="font-semibold text-muted-foreground">Effective Rate</div>
-            <div className="text-lg font-bold text-peacock-blue">
-              {results.effectiveTaxRate.toFixed(2)}%
+
+          {/* Summary Stats Section */}
+          <div className="flex flex-col justify-center space-y-6">
+            <div>
+              <div className="font-semibold text-muted-foreground">Total Taxes</div>
+              <div className="text-3xl font-bold text-peacock-blue">
+                {formatCurrency(results.totalTaxes)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-muted-foreground">Effective Rate</div>
+              <div className="text-3xl font-bold text-peacock-blue">
+                {results.effectiveTaxRate.toFixed(2)}%
+              </div>
             </div>
           </div>
         </div>
