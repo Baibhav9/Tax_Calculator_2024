@@ -11,27 +11,27 @@ interface TaxResultsChartProps {
 export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => {
   const data = [
     {
-      name: 'Federal Tax',
-      value: results.federalTax,
+      name: 'Income Tax',
+      value: results.federalTax + results.stateTax,
       color: '#0D6E98' // Peacock blue
     },
     {
-      name: 'State Tax',
-      value: results.stateTax,
+      name: 'Payroll Taxes',
+      value: results.socialSecurityTax + results.medicareTax + results.additionalMedicareTax,
       color: '#B58537' // Luxor gold
     },
     {
-      name: 'Social Security',
-      value: results.socialSecurityTax,
+      name: 'Deductions',
+      value: results.standardDeduction,
       color: '#dc2626' // Red
     },
     {
-      name: 'Medicare',
-      value: results.medicareTax + results.additionalMedicareTax,
+      name: 'Taxable Income',
+      value: results.taxableIncome,
       color: '#7c3aed' // Purple
     },
     {
-      name: 'Take-Home Pay',
+      name: 'Net Income',
       value: results.netIncome,
       color: '#22c55e' // Green
     }
@@ -69,7 +69,7 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
       <CardHeader>
         <CardTitle>Income Distribution</CardTitle>
         <CardDescription>
-          How your gross income is allocated across taxes and take-home pay
+          How your gross income is allocated across taxes, deductions, and take-home pay
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -108,39 +108,33 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
           {/* Summary Stats Section */}
           <div className="flex flex-col justify-center space-y-4">
             <div>
-              <div className="font-semibold text-muted-foreground text-sm">Gross Income:</div>
-              <div className="text-xl font-bold" style={{ color: '#22c55e' }}>
-                {formatCurrency(results.grossIncome)}
+              <div className="font-semibold text-muted-foreground text-sm">Income Tax:</div>
+              <div className="text-xl font-bold" style={{ color: '#0D6E98' }}>
+                {formatCurrency(results.federalTax + results.stateTax)}
               </div>
             </div>
             <div>
-              <div className="font-semibold text-muted-foreground text-sm">Adjusted Gross Income:</div>
-              <div className="text-xl font-bold" style={{ color: '#22c55e' }}>
-                {formatCurrency(results.adjustedGrossIncome)}
-              </div>
-            </div>
-            <div>
-              <div className="font-semibold text-muted-foreground text-sm">Standard/Other deductions:</div>
+              <div className="font-semibold text-muted-foreground text-sm">Payroll Taxes:</div>
               <div className="text-xl font-bold" style={{ color: '#B58537' }}>
+                {formatCurrency(results.socialSecurityTax + results.medicareTax + results.additionalMedicareTax)}
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold text-muted-foreground text-sm">Deductions:</div>
+              <div className="text-xl font-bold" style={{ color: '#dc2626' }}>
                 {formatCurrency(results.standardDeduction)}
               </div>
             </div>
             <div>
-              <div className="font-semibold text-muted-foreground text-sm">Federal Income Tax:</div>
-              <div className="text-xl font-bold" style={{ color: '#0D6E98' }}>
-                {formatCurrency(results.federalTax)}
+              <div className="font-semibold text-muted-foreground text-sm">Taxable Income:</div>
+              <div className="text-xl font-bold" style={{ color: '#7c3aed' }}>
+                {formatCurrency(results.taxableIncome)}
               </div>
             </div>
             <div className="pt-2 border-t">
-              <div className="font-semibold text-muted-foreground text-sm">Total Taxes</div>
-              <div className="text-2xl font-bold" style={{ color: '#dc2626' }}>
-                {formatCurrency(results.totalTaxes)}
-              </div>
-            </div>
-            <div>
-              <div className="font-semibold text-muted-foreground text-sm">Effective Rate</div>
-              <div className="text-2xl font-bold" style={{ color: '#7c3aed' }}>
-                {results.effectiveTaxRate.toFixed(2)}%
+              <div className="font-semibold text-muted-foreground text-sm">Net Income</div>
+              <div className="text-2xl font-bold" style={{ color: '#22c55e' }}>
+                {formatCurrency(results.netIncome)}
               </div>
             </div>
           </div>
