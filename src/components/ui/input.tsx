@@ -4,7 +4,7 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, onChange, ...props }, ref) => {
+  ({ className, type, onChange, onKeyDown, ...props }, ref) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       
@@ -20,6 +20,18 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
       }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Prevent 'e', 'E', '+', '-' from being typed (common in number inputs)
+      if (['e', 'E', '+', '-'].includes(e.key)) {
+        e.preventDefault();
+      }
+      
+      // Call the original onKeyDown if provided
+      if (onKeyDown) {
+        onKeyDown(e);
+      }
+    };
+
     return (
       <input
         type={type}
@@ -29,6 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
         )}
         ref={ref}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         {...props}
       />
     )
