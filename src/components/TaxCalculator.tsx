@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -160,35 +161,6 @@ export const TaxCalculator = () => {
                   <Separator />
 
                   <div className="space-y-3">
-                    <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Tax Withholdings</h4>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="federalWithholding" className="flex items-center space-x-2">
-                        <span>Federal Tax Withheld</span>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Amount of federal taxes already withheld from your paychecks</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </Label>
-                      <Input
-                        id="federalWithholding"
-                        type="number"
-                        min="0"
-                        placeholder="Federal taxes withheld"
-                        value={formData.federalWithholding || ''}
-                        onChange={(e) => handleInputChange('federalWithholding', Number(e.target.value))}
-                        className="h-10"
-                      />
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-3">
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
@@ -281,7 +253,7 @@ export const TaxCalculator = () => {
 
                 {/* Charts */}
                 <div className="grid grid-cols-1 gap-6">
-                  <TaxResultsChart results={results} />
+                  <TaxResultsChart results={results} effectiveDeductions={effectiveDeductions} />
                 </div>
               </div>
             )}

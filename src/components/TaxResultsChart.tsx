@@ -6,9 +6,10 @@ import { TaxCalculationResult } from '@/utils/taxCalculations';
 
 interface TaxResultsChartProps {
   results: TaxCalculationResult;
+  effectiveDeductions: number;
 }
 
-export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => {
+export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results, effectiveDeductions }) => {
   const data = [
     {
       name: 'Income Tax',
@@ -22,7 +23,7 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
     },
     {
       name: 'Deductions',
-      value: results.standardDeduction,
+      value: effectiveDeductions,
       color: '#dc2626' // Red
     },
     {
@@ -122,7 +123,7 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results }) => 
             <div>
               <div className="font-semibold text-muted-foreground text-xs">Deductions:</div>
               <div className="text-lg font-bold" style={{ color: '#dc2626' }}>
-                {formatCurrency(results.standardDeduction)}
+                {formatCurrency(effectiveDeductions)}
               </div>
             </div>
             <div>
