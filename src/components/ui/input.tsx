@@ -1,9 +1,25 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, onChange, ...props }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      
+      // Allow only numbers and commas, limit to 25 characters
+      const filteredValue = value.replace(/[^0-9,]/g, '').slice(0, 25);
+      
+      // Update the input value
+      e.target.value = filteredValue;
+      
+      // Call the original onChange if provided
+      if (onChange) {
+        onChange(e);
+      }
+    };
+
     return (
       <input
         type={type}
@@ -12,6 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className
         )}
         ref={ref}
+        onChange={handleChange}
         {...props}
       />
     )
