@@ -1,10 +1,11 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -142,20 +143,22 @@ export const TaxCalculator = () => {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="filingStatus">Filing Status</Label>
-                    <Select value={formData.filingStatus} onValueChange={(value) => handleInputChange('filingStatus', value)}>
-                      <SelectTrigger className="h-10">
-                        <SelectValue placeholder="Select filing status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {FILING_STATUS_OPTIONS.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
+                  <div className="space-y-3">
+                    <Label>Filing Status</Label>
+                    <RadioGroup 
+                      value={formData.filingStatus} 
+                      onValueChange={(value) => handleInputChange('filingStatus', value)}
+                      className="space-y-2"
+                    >
+                      {FILING_STATUS_OPTIONS.map((option) => (
+                        <div key={option.value} className="flex items-center space-x-2">
+                          <RadioGroupItem value={option.value} id={option.value} />
+                          <Label htmlFor={option.value} className="cursor-pointer">
                             {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
                   </div>
 
                   <Separator />
@@ -278,3 +281,4 @@ export const TaxCalculator = () => {
     </TooltipProvider>
   );
 };
+
