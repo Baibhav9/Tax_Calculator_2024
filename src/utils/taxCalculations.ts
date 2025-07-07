@@ -1,3 +1,4 @@
+
 // 2024 Tax Year Federal Tax Brackets
 export const FEDERAL_TAX_BRACKETS_2024 = {
   single: [
@@ -44,20 +45,6 @@ export const STANDARD_DEDUCTIONS_2024 = {
   marriedFilingJointly: 29200,
   marriedFilingSeparately: 14600,
   headOfHousehold: 21900
-};
-
-// FICA Tax Rates and Limits for 2024
-export const FICA_2024 = {
-  socialSecurityRate: 0.062,
-  medicareRate: 0.0145,
-  socialSecurityWageBase: 168600,
-  medicareAdditionalRate: 0.009,
-  medicareAdditionalThreshold: {
-    single: 200000,
-    marriedFilingJointly: 250000,
-    marriedFilingSeparately: 125000,
-    headOfHousehold: 200000
-  }
 };
 
 // State tax information (simplified - major states)
@@ -137,9 +124,6 @@ export interface TaxCalculationResult {
   taxableIncome: number;
   federalTax: number;
   stateTax: number;
-  socialSecurityTax: number;
-  medicareTax: number;
-  additionalMedicareTax: number;
   totalFederalTax: number;
   totalStateTax: number;
   totalTaxes: number;
@@ -191,22 +175,6 @@ export function calculateFederalTax(taxableIncome: number, filingStatus: string)
   return { tax, bracketDetails, marginalRate };
 }
 
-export function calculateFICATaxes(income: number, filingStatus: string): {
-  socialSecurity: number;
-  medicare: number;
-  additionalMedicare: number;
-} {
-  const socialSecurity = Math.min(income, FICA_2024.socialSecurityWageBase) * FICA_2024.socialSecurityRate;
-  const medicare = income * FICA_2024.medicareRate;
-  
-  const additionalMedicareThreshold = FICA_2024.medicareAdditionalThreshold[filingStatus as keyof typeof FICA_2024.medicareAdditionalThreshold];
-  const additionalMedicare = income > additionalMedicareThreshold 
-    ? (income - additionalMedicareThreshold) * FICA_2024.medicareAdditionalRate 
-    : 0;
-
-  return { socialSecurity, medicare, additionalMedicare };
-}
-
 export function calculateStateTax(taxableIncome: number, state: string): { tax: number; bracketDetails: any[] } {
   const stateInfo = STATE_TAX_INFO[state as keyof typeof STATE_TAX_INFO];
   if (!stateInfo || !stateInfo.hasIncomeTax) return { tax: 0, bracketDetails: [] };
@@ -253,16 +221,13 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
   // Calculate federal tax
   const { tax: federalTax, bracketDetails, marginalRate } = calculateFederalTax(taxableIncome, input.filingStatus);
   
-  // Calculate FICA taxes
-  const { socialSecurity, medicare, additionalMedicare } = calculateFICATaxes(grossIncome, input.filingStatus);
-  
   // Calculate state tax
   const { tax: stateTax, bracketDetails: stateBracketDetails } = calculateStateTax(taxableIncome, input.state);
   
-  // Calculate totals
+  // Calculate totals (only income taxes, no FICA)
   const totalFederalTax = federalTax;
   const totalStateTax = stateTax;
-  const totalTaxes = totalFederalTax + totalStateTax + socialSecurity + medicare + additionalMedicare;
+  const totalTaxes = totalFederalTax + totalStateTax;
   const netIncome = grossIncome - totalTaxes;
   const effectiveTaxRate = grossIncome > 0 ? (totalTaxes / grossIncome) * 100 : 0;
   
@@ -277,9 +242,6 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
     taxableIncome,
     federalTax,
     stateTax,
-    socialSecurityTax: socialSecurity,
-    medicareTax: medicare,
-    additionalMedicareTax: additionalMedicare,
     totalFederalTax,
     totalStateTax,
     totalTaxes,

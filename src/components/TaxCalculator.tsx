@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -239,14 +237,6 @@ export const TaxCalculator = () => {
                             <span>Federal Income Tax:</span>
                             <span className="font-medium">{formatCurrency(results.federalTax)}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Social Security Tax:</span>
-                            <span className="font-medium">{formatCurrency(results.socialSecurityTax)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Medicare Tax:</span>
-                            <span className="font-medium">{formatCurrency(results.medicareTax)}</span>
-                          </div>
                           <Separator />
                           <div className="flex justify-between font-semibold text-lg">
                             <span>Total Taxes:</span>
@@ -285,4 +275,3 @@ export const TaxCalculator = () => {
     </TooltipProvider>
   );
 };
-
