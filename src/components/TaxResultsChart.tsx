@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
@@ -15,11 +16,6 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results, effec
       name: 'Income Tax',
       value: results.federalTax + results.stateTax,
       color: '#0D6E98' // Peacock blue
-    },
-    {
-      name: 'Payroll Taxes',
-      value: results.socialSecurityTax + results.medicareTax + results.additionalMedicareTax,
-      color: '#B58537' // Luxor gold
     },
     {
       name: 'Deductions',
@@ -110,31 +106,25 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results, effec
           <div className="flex flex-col justify-center space-y-3">
             <div>
               <div className="font-semibold text-muted-foreground text-xs">Income Tax:</div>
-              <div className="text-lg font-bold" style={{ color: '#0D6E98' }}>
+              <div className="text-base font-bold" style={{ color: '#0D6E98' }}>
                 {formatCurrency(results.federalTax + results.stateTax)}
               </div>
             </div>
             <div>
-              <div className="font-semibold text-muted-foreground text-xs">Payroll Taxes:</div>
-              <div className="text-lg font-bold" style={{ color: '#B58537' }}>
-                {formatCurrency(results.socialSecurityTax + results.medicareTax + results.additionalMedicareTax)}
-              </div>
-            </div>
-            <div>
               <div className="font-semibold text-muted-foreground text-xs">Deductions:</div>
-              <div className="text-lg font-bold" style={{ color: '#dc2626' }}>
+              <div className="text-base font-bold" style={{ color: '#dc2626' }}>
                 {formatCurrency(effectiveDeductions)}
               </div>
             </div>
             <div>
               <div className="font-semibold text-muted-foreground text-xs">Taxable Income:</div>
-              <div className="text-lg font-bold" style={{ color: '#7c3aed' }}>
+              <div className="text-base font-bold" style={{ color: '#7c3aed' }}>
                 {formatCurrency(results.taxableIncome)}
               </div>
             </div>
             <div className="pt-2 border-t">
               <div className="font-semibold text-muted-foreground text-xs">Net Income</div>
-              <div className="text-xl font-bold" style={{ color: '#22c55e' }}>
+              <div className="text-lg font-bold" style={{ color: '#22c55e' }}>
                 {formatCurrency(results.netIncome)}
               </div>
             </div>
@@ -144,3 +134,4 @@ export const TaxResultsChart: React.FC<TaxResultsChartProps> = ({ results, effec
     </Card>
   );
 };
+

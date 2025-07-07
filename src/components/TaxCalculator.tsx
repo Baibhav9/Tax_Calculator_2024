@@ -220,10 +220,6 @@ export const TaxCalculator = () => {
                             <span className="font-medium">{formatCurrency(results.grossIncome)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Adjusted Gross Income:</span>
-                            <span className="font-medium">{formatCurrency(results.adjustedGrossIncome)}</span>
-                          </div>
-                          <div className="flex justify-between">
                             <span>Standard/Other deductions:</span>
                             <span className="font-medium">{formatCurrency(effectiveDeductions)}</span>
                           </div>
@@ -242,6 +238,14 @@ export const TaxCalculator = () => {
                           <div className="flex justify-between">
                             <span>Federal Income Tax:</span>
                             <span className="font-medium">{formatCurrency(results.federalTax)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Social Security Tax:</span>
+                            <span className="font-medium">{formatCurrency(results.socialSecurityTax)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Medicare Tax:</span>
+                            <span className="font-medium">{formatCurrency(results.medicareTax)}</span>
                           </div>
                           <Separator />
                           <div className="flex justify-between font-semibold text-lg">
