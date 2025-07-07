@@ -12,10 +12,10 @@ import { calculateTaxes, TaxCalculationInput, TaxCalculationResult } from '@/uti
 import { TaxResultsChart } from '@/components/TaxResultsChart';
 
 const FILING_STATUS_OPTIONS = [
-  { value: 'single', label: 'Single' },
-  { value: 'marriedFilingJointly', label: 'Married Filing Jointly' },
-  { value: 'marriedFilingSeparately', label: 'Married Filing Separately' },
-  { value: 'headOfHousehold', label: 'Head of Household' }
+  { value: 'single', label: 'Single', standardDeduction: 14600 },
+  { value: 'marriedFilingJointly', label: 'Married Filing Jointly', standardDeduction: 29200 },
+  { value: 'marriedFilingSeparately', label: 'Married Filing Separately', standardDeduction: 14600 },
+  { value: 'headOfHousehold', label: 'Head of Household', standardDeduction: 21900 }
 ];
 
 export const TaxCalculator = () => {
@@ -149,11 +149,16 @@ export const TaxCalculator = () => {
                       className="space-y-2"
                     >
                       {FILING_STATUS_OPTIONS.map((option) => (
-                        <div key={option.value} className="flex items-center space-x-2">
-                          <RadioGroupItem value={option.value} id={option.value} />
-                          <Label htmlFor={option.value} className="cursor-pointer">
-                            {option.label}
-                          </Label>
+                        <div key={option.value} className="flex items-center justify-between space-x-2">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value={option.value} id={option.value} />
+                            <Label htmlFor={option.value} className="cursor-pointer">
+                              {option.label}
+                            </Label>
+                          </div>
+                          <span className="text-sm text-muted-foreground">
+                            ${option.standardDeduction.toLocaleString()}
+                          </span>
                         </div>
                       ))}
                     </RadioGroup>
