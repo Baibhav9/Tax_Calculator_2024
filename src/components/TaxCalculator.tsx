@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ export const TaxCalculator = () => {
     state: 'CA',
     federalWithholding: 0,
     stateWithholding: 0,
-    otherDeductions: 0,
+    otherDeductions: 14600, // Set to single filing status standard deduction by default
     dependents: 0,
     hasRetirementContributions: false,
     retirementContributions: 0,
@@ -36,21 +37,13 @@ export const TaxCalculator = () => {
   });
 
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
-  const [effectiveDeductions, setEffectiveDeductions] = useState<number>(0);
+  const [effectiveDeductions, setEffectiveDeductions] = useState<number>(14600);
 
   useEffect(() => {
     if (formData.income > 0) {
-      // Apply the Standard/Other deductions logic
-      const calculatedEffectiveDeductions = formData.otherDeductions <= 14600 ? 14600 : formData.otherDeductions;
-      setEffectiveDeductions(calculatedEffectiveDeductions);
-      
-      const modifiedFormData = {
-        ...formData,
-        otherDeductions: calculatedEffectiveDeductions
-      };
-      
-      const calculatedResults = calculateTaxes(modifiedFormData);
+      const calculatedResults = calculateTaxes(formData);
       setResults(calculatedResults);
+      setEffectiveDeductions(formData.otherDeductions);
     }
   }, [formData]);
 
@@ -58,6 +51,17 @@ export const TaxCalculator = () => {
     setFormData(prev => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleFilingStatusChange = (filingStatus: string) => {
+    const selectedOption = FILING_STATUS_OPTIONS.find(option => option.value === filingStatus);
+    const standardDeduction = selectedOption ? selectedOption.standardDeduction : 14600;
+    
+    setFormData(prev => ({
+      ...prev,
+      filingStatus: filingStatus,
+      otherDeductions: standardDeduction
     }));
   };
 
@@ -145,7 +149,7 @@ export const TaxCalculator = () => {
                     <Label>Filing Status</Label>
                     <RadioGroup 
                       value={formData.filingStatus} 
-                      onValueChange={(value) => handleInputChange('filingStatus', value)}
+                      onValueChange={handleFilingStatusChange}
                       className="space-y-2"
                     >
                       {FILING_STATUS_OPTIONS.map((option) => (
@@ -170,12 +174,12 @@ export const TaxCalculator = () => {
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="otherDeductions">Standard/Other deductions</Label>
+                      <Label htmlFor="otherDeductions">Standard/Itemized Deduction</Label>
                       <Input
                         id="otherDeductions"
                         type="number"
                         min="0"
-                        placeholder="Standard/Other deductions"
+                        placeholder="Standard/Itemized Deduction"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
                         className="h-10"
