@@ -1,4 +1,3 @@
-
 // 2024 Tax Year Federal Tax Brackets
 export const FEDERAL_TAX_BRACKETS_2024 = {
   single: [
@@ -36,6 +35,15 @@ export const FEDERAL_TAX_BRACKETS_2024 = {
     { min: 191950, max: 243700, rate: 0.32 },
     { min: 243700, max: 609350, rate: 0.35 },
     { min: 609350, max: Infinity, rate: 0.37 }
+  ],
+  qualifyingSurvivingSpouse: [
+    { min: 0, max: 23200, rate: 0.10 },
+    { min: 23200, max: 94300, rate: 0.12 },
+    { min: 94300, max: 201050, rate: 0.22 },
+    { min: 201050, max: 383900, rate: 0.24 },
+    { min: 383900, max: 487450, rate: 0.32 },
+    { min: 487450, max: 731200, rate: 0.35 },
+    { min: 731200, max: Infinity, rate: 0.37 }
   ]
 };
 
@@ -44,7 +52,8 @@ export const STANDARD_DEDUCTIONS_2024 = {
   single: 14600,
   marriedFilingJointly: 29200,
   marriedFilingSeparately: 14600,
-  headOfHousehold: 21900
+  headOfHousehold: 21900,
+  qualifyingSurvivingSpouse: 29200
 };
 
 // State tax information (simplified - major states)

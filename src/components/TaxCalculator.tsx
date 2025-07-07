@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,7 +15,8 @@ const FILING_STATUS_OPTIONS = [
   { value: 'single', label: 'Single', standardDeduction: 14600 },
   { value: 'marriedFilingJointly', label: 'Married Filing Jointly', standardDeduction: 29200 },
   { value: 'marriedFilingSeparately', label: 'Married Filing Separately', standardDeduction: 14600 },
-  { value: 'headOfHousehold', label: 'Head of Household', standardDeduction: 21900 }
+  { value: 'headOfHousehold', label: 'Head of Household', standardDeduction: 21900 },
+  { value: 'qualifyingSurvivingSpouse', label: 'Qualifying Surviving Spouse', standardDeduction: 29200 }
 ];
 
 export const TaxCalculator = () => {
@@ -26,7 +26,7 @@ export const TaxCalculator = () => {
     state: 'CA',
     federalWithholding: 0,
     stateWithholding: 0,
-    otherDeductions: 14600, // Set to single filing status standard deduction by default
+    otherDeductions: 0, // This will now be for Other/Itemized Deductions only
     dependents: 0,
     hasRetirementContributions: false,
     retirementContributions: 0,
@@ -37,13 +37,28 @@ export const TaxCalculator = () => {
   });
 
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
-  const [effectiveDeductions, setEffectiveDeductions] = useState<number>(14600);
+  const [standardDeduction, setStandardDeduction] = useState<number>(14600);
+  const [totalDeductions, setTotalDeductions] = useState<number>(14600);
 
   useEffect(() => {
+    // Calculate standard deduction based on filing status
+    const selectedOption = FILING_STATUS_OPTIONS.find(option => option.value === formData.filingStatus);
+    const currentStandardDeduction = selectedOption ? selectedOption.standardDeduction : 14600;
+    setStandardDeduction(currentStandardDeduction);
+    
+    // Calculate total deductions (standard + other/itemized)
+    const currentTotalDeductions = currentStandardDeduction + formData.otherDeductions;
+    setTotalDeductions(currentTotalDeductions);
+
     if (formData.income > 0) {
-      const calculatedResults = calculateTaxes(formData);
+      // Create modified form data with total deductions
+      const modifiedFormData = {
+        ...formData,
+        otherDeductions: currentTotalDeductions
+      };
+      
+      const calculatedResults = calculateTaxes(modifiedFormData);
       setResults(calculatedResults);
-      setEffectiveDeductions(formData.otherDeductions);
     }
   }, [formData]);
 
@@ -55,13 +70,9 @@ export const TaxCalculator = () => {
   };
 
   const handleFilingStatusChange = (filingStatus: string) => {
-    const selectedOption = FILING_STATUS_OPTIONS.find(option => option.value === filingStatus);
-    const standardDeduction = selectedOption ? selectedOption.standardDeduction : 14600;
-    
     setFormData(prev => ({
       ...prev,
-      filingStatus: filingStatus,
-      otherDeductions: standardDeduction
+      filingStatus: filingStatus
     }));
   };
 
@@ -174,12 +185,12 @@ export const TaxCalculator = () => {
                     <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Deductions & Adjustments</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="otherDeductions">Standard/Itemized Deduction</Label>
+                      <Label htmlFor="otherDeductions">Other/Itemized Deduction</Label>
                       <Input
                         id="otherDeductions"
                         type="number"
                         min="0"
-                        placeholder="Standard/Itemized Deduction"
+                        placeholder="Additional deductions beyond standard"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
                         className="h-10"
@@ -227,8 +238,12 @@ export const TaxCalculator = () => {
                             <span className="font-medium">{formatCurrency(results.grossIncome)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Standard/Other deductions:</span>
-                            <span className="font-medium">{formatCurrency(effectiveDeductions)}</span>
+                            <span>Standard Deduction:</span>
+                            <span className="font-medium">{formatCurrency(standardDeduction)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Other/Itemized Deduction:</span>
+                            <span className="font-medium">{formatCurrency(formData.otherDeductions)}</span>
                           </div>
                           <Separator />
                           <div className="flex justify-between font-semibold">
@@ -259,7 +274,7 @@ export const TaxCalculator = () => {
 
                 {/* Charts */}
                 <div className="grid grid-cols-1 gap-6">
-                  <TaxResultsChart results={results} effectiveDeductions={effectiveDeductions} />
+                  <TaxResultsChart results={results} effectiveDeductions={totalDeductions} />
                 </div>
               </div>
             )}
