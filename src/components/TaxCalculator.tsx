@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -239,14 +240,18 @@ export const TaxCalculator = () => {
                             <span>Gross Income:</span>
                             <span className="font-medium">{formatCurrency(results.grossIncome)}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Standard Deduction:</span>
-                            <span className="font-medium">{formatCurrency(standardDeduction)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Other/Itemized Deduction:</span>
-                            <span className="font-medium">{formatCurrency(formData.otherDeductions)}</span>
-                          </div>
+                          {!isUsingItemized && (
+                            <div className="flex justify-between">
+                              <span>Standard Deduction:</span>
+                              <span className="font-medium">{formatCurrency(standardDeduction)}</span>
+                            </div>
+                          )}
+                          {isUsingItemized && (
+                            <div className="flex justify-between">
+                              <span>Other/Itemized Deduction:</span>
+                              <span className="font-medium">{formatCurrency(formData.otherDeductions)}</span>
+                            </div>
+                          )}
                           <div className="flex justify-between items-center">
                             <span>Deduction Used:</span>
                             <div className="flex items-center space-x-2">
