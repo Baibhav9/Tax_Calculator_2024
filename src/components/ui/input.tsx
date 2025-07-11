@@ -4,12 +4,18 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, onChange, onKeyDown, ...props }, ref) => {
+  ({ className, type, onChange, onKeyDown, maxLength, ...props }, ref) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       
-      // Allow only numbers and commas, limit to 25 characters
-      const filteredValue = value.replace(/[^0-9,]/g, '').slice(0, 25);
+      // If maxLength is specified, enforce it
+      if (maxLength && value.length > maxLength) {
+        e.target.value = value.slice(0, maxLength);
+      }
+      
+      // Allow only numbers and commas, limit to specified maxLength or 25 characters
+      const limit = maxLength || 25;
+      const filteredValue = e.target.value.replace(/[^0-9,]/g, '').slice(0, limit);
       
       // Update the input value
       e.target.value = filteredValue;
@@ -42,6 +48,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
         ref={ref}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        maxLength={maxLength}
         {...props}
       />
     )

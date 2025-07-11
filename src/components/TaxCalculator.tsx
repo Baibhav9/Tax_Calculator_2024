@@ -149,6 +149,7 @@ export const TaxCalculator = () => {
                       id="income"
                       type="number"
                       min="0"
+                      maxLength={22}
                       placeholder="Enter your annual income"
                       value={formData.income || ''}
                       onChange={(e) => handleInputChange('income', Number(e.target.value))}
@@ -190,6 +191,7 @@ export const TaxCalculator = () => {
                         id="otherDeductions"
                         type="number"
                         min="0"
+                        maxLength={22}
                         placeholder="Additional deductions beyond standard"
                         value={formData.otherDeductions || ''}
                         onChange={(e) => handleInputChange('otherDeductions', Number(e.target.value))}
