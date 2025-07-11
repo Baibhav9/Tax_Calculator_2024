@@ -216,16 +216,20 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
   
   const adjustedGrossIncome = grossIncome - adjustments;
   
-  // Standard deduction
+  // Standard deduction based on filing status
   const standardDeduction = STANDARD_DEDUCTIONS_2024[input.filingStatus as keyof typeof STANDARD_DEDUCTIONS_2024];
   
-  // Calculate taxable income
-  let totalDeductions = standardDeduction + input.otherDeductions;
+  // Calculate total itemized deductions
+  let itemizedDeductions = input.otherDeductions;
   if (input.hasCharitableDeductions) {
-    totalDeductions += input.charitableDeductions;
+    itemizedDeductions += input.charitableDeductions;
   }
   
-  const taxableIncome = Math.max(0, adjustedGrossIncome - totalDeductions);
+  // Use the higher of standard or itemized deductions
+  const effectiveDeduction = Math.max(standardDeduction, itemizedDeductions);
+  
+  // Calculate taxable income
+  const taxableIncome = Math.max(0, adjustedGrossIncome - effectiveDeduction);
   
   // Calculate federal tax
   const { tax: federalTax, bracketDetails, marginalRate } = calculateFederalTax(taxableIncome, input.filingStatus);
@@ -247,7 +251,7 @@ export function calculateTaxes(input: TaxCalculationInput): TaxCalculationResult
   return {
     grossIncome,
     adjustedGrossIncome,
-    standardDeduction,
+    standardDeduction: effectiveDeduction,
     taxableIncome,
     federalTax,
     stateTax,

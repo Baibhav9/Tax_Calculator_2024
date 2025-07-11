@@ -26,7 +26,7 @@ export const TaxCalculator = () => {
     state: 'CA',
     federalWithholding: 0,
     stateWithholding: 0,
-    otherDeductions: 0, // This will now be for Other/Itemized Deductions only
+    otherDeductions: 0,
     dependents: 0,
     hasRetirementContributions: false,
     retirementContributions: 0,
@@ -38,7 +38,7 @@ export const TaxCalculator = () => {
 
   const [results, setResults] = useState<TaxCalculationResult | null>(null);
   const [standardDeduction, setStandardDeduction] = useState<number>(14600);
-  const [totalDeductions, setTotalDeductions] = useState<number>(14600);
+  const [isUsingItemized, setIsUsingItemized] = useState<boolean>(false);
 
   useEffect(() => {
     // Calculate standard deduction based on filing status
@@ -46,18 +46,18 @@ export const TaxCalculator = () => {
     const currentStandardDeduction = selectedOption ? selectedOption.standardDeduction : 14600;
     setStandardDeduction(currentStandardDeduction);
     
-    // Calculate total deductions (standard + other/itemized)
-    const currentTotalDeductions = currentStandardDeduction + formData.otherDeductions;
-    setTotalDeductions(currentTotalDeductions);
+    // Calculate itemized deductions
+    let itemizedDeductions = formData.otherDeductions;
+    if (formData.hasCharitableDeductions) {
+      itemizedDeductions += formData.charitableDeductions;
+    }
+    
+    // Determine if using itemized or standard deduction
+    const usingItemized = itemizedDeductions > currentStandardDeduction;
+    setIsUsingItemized(usingItemized);
 
     if (formData.income > 0) {
-      // Create modified form data with total deductions
-      const modifiedFormData = {
-        ...formData,
-        otherDeductions: currentTotalDeductions
-      };
-      
-      const calculatedResults = calculateTaxes(modifiedFormData);
+      const calculatedResults = calculateTaxes(formData);
       setResults(calculatedResults);
     }
   }, [formData]);
@@ -247,6 +247,15 @@ export const TaxCalculator = () => {
                             <span>Other/Itemized Deduction:</span>
                             <span className="font-medium">{formatCurrency(formData.otherDeductions)}</span>
                           </div>
+                          <div className="flex justify-between items-center">
+                            <span>Deduction Used:</span>
+                            <div className="flex items-center space-x-2">
+                              <span className="font-medium">{formatCurrency(results.standardDeduction)}</span>
+                              <Badge variant={isUsingItemized ? "default" : "secondary"} className="text-xs">
+                                {isUsingItemized ? "Itemized" : "Standard"}
+                              </Badge>
+                            </div>
+                          </div>
                           <Separator />
                           <div className="flex justify-between font-semibold">
                             <span>Taxable Income:</span>
@@ -276,7 +285,7 @@ export const TaxCalculator = () => {
 
                 {/* Charts */}
                 <div className="grid grid-cols-1 gap-6">
-                  <TaxResultsChart results={results} effectiveDeductions={totalDeductions} />
+                  <TaxResultsChart results={results} effectiveDeductions={results.standardDeduction} />
                 </div>
               </div>
             )}
